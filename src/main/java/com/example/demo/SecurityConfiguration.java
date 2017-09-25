@@ -15,11 +15,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure (HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .anyRequest().authenticated()
+                .antMatchers("/")
+                .permitAll()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
-                .and()
-                .httpBasic();
+                .authorizeRequests()
+                .antMatchers("/console/**")
+                .permitAll();
+
+        http
+                .csrf().disable();
+        http
+                .headers().frameOptions().disable();
     }
 
 @Override
